@@ -1,35 +1,47 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+// import type { PayloadAction } from "@reduxjs/toolkit";
+import { fetchAllUsers } from "./operations";
+import { UserState } from "../../../types";
 
-export interface CounterState {
-  value: number;
-}
-
-const initialState: CounterState = {
-  value: 0,
+export const initialState: UserState = {
+  users: [],
+  isLoading: false,
+  isError: null,
 };
 
+const handlePending = (state: UserState) => {
+  state.isLoading = true;
+  state.isError = null;
+};
+
+// const handleRejected = (state: UserState, action: PayloadAction<string>) => {
+//   if (action.payload) {
+//     state.isError = action.payload;
+//   }
+//   state.isLoading = false;
+// };
+
 export const userSlice = createSlice({
-  name: "counter",
+  name: "users",
   initialState,
   reducers: {
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1;
+    createUser(state, action) {
+      state.users.push(action.payload);
     },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
-    },
+  },
+
+  extraReducers: (builder) => {
+    builder.addCase(fetchAllUsers.pending, handlePending);
+    // builder.addCase(fetchAllUsers.rejected, handleRejected);
+    builder.addCase(fetchAllUsers.fulfilled, (state, action) => {
+      state.users = action.payload;
+      state.isError = null;
+      state.isLoading = false;
+    });
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = userSlice.actions;
+export const { createUser } = userSlice.actions;
 
-export default userSlice.reducer;
+export const userReducer = userSlice.reducer;
