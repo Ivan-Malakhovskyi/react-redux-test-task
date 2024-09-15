@@ -1,11 +1,11 @@
 {
-  "name": "react-redux-test-task",
+  "name": "react-storybook",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build --base=/react-redux-test-task/",
+    "build": "tsc -b && vite build --base=/react-storybook/",
     "lint": "eslint .",
     "preview": "vite preview"
   },
