@@ -51,3 +51,5 @@ export const InputStyled = styled.input<InputProps>`
   ${(props) => alignmentStyles[props.alignment]};
   ${(props) => variantStyles[props.variant]};
 `;
+
+export default borderStyles;
